@@ -3,6 +3,7 @@
 
 int main() {
     std::cout << "Hello, world!\n";
+    std::cout<<"Test";
     std::array<int, 100> v{};
     int nr;
     std::cout << "Introduceți nr: ";
