@@ -5,6 +5,7 @@ Jucatorul are la dispozitie mai multe actiuni pe parcursul aventurii:
 3. Lupta contra monstrilor
 4. Iesire
 5. Accesarea inventarului
+
 Luptele se desfasoara prin actiuni alternative intre user si computer, unde rata succesului e determinata de o "aruncare" cu un zar cu valoare intre [1,20] (regula se aplica pt ambele parti). Jucatorul poate ataca folosind armele din inventar sau isi poate da heal.
 O victorie este urmata de un castig financiar si de cresterea dificultatii oponentilor.
 Aventura se incheie dupa doborarea dragonului cu nivel maxim de dificultate sau odata cu moartea protagonistului.
