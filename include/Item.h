@@ -9,7 +9,7 @@ protected:
 public:
     Item();
     Item(std::string n, int prc);
-    virtual ~Item();#include "Item.h"
+    virtual ~Item();
 
 Item::Item() : name("Unknown"), price(0) {}
 Item::Item(std::string n, int prc) : name(n), price(prc) {}
