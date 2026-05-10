@@ -1,5 +1,7 @@
+#include "GameEngine.h"
 #include <iostream>
 int main() {
-    std::cout<<"Commit test";
+        GameEngine::.start();
     return 0;
 }
+
