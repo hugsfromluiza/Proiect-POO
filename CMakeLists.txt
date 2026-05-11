@@ -136,6 +136,10 @@ add_executable(${MAIN_EXECUTABLE_NAME} main.cpp ${SOURCES}
         include/example.h
         src/Item.cpp
         include/Item.h
+        src/Potion.cpp
+        include/Potion.h
+        src/Weapon.cpp
+        include/Weapon.h
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )
