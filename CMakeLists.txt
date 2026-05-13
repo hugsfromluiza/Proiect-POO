@@ -144,6 +144,10 @@ add_executable(${MAIN_EXECUTABLE_NAME} main.cpp ${SOURCES}
         include/Inventory.h
         src/Monster.cpp
         include/Monster.h
+        src/MonsterFactory.cpp
+        include/MonsterFactory.h
+        src/GameException.cpp
+        include/GameException.h
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )
