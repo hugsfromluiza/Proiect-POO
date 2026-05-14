@@ -9,9 +9,3 @@ void Monster::takeDamage(int amount) {
 
 int Monster::attack() const { return damageOutput; }
 
-Goblin::Goblin(std::string n, int hp, int g, int dmg) : Monster(n, hp, g, dmg) {}
-void Goblin::battleCry() const { std::cout << "Goblinul urla: Grahhh!\n"; }
-
-Dragon::Dragon(std::string n, int hp, int g, int dmg) : Monster(n, hp, g, dmg) {}
-void Dragon::battleCry() const { std::cout << "Dragonul rage: ROAAAAR!\n"; }
-void Dragon::fireBreath() const { std::cout << "Dragonul scuipa foc!\n"; }

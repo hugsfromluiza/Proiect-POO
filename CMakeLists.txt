@@ -148,6 +148,12 @@ add_executable(${MAIN_EXECUTABLE_NAME} main.cpp ${SOURCES}
         include/MonsterFactory.h
         src/GameException.cpp
         include/GameException.h
+        src/Goblin.cpp
+        include/Goblin.h
+        src/Dragon.cpp
+        include/Dragon.h
+        src/Player.cpp
+        include/Player.h
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )
