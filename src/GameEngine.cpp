@@ -56,7 +56,10 @@ void GameEngine::initShop() {
 
 void GameEngine::loadData() {
     std::ifstream file("saves.txt");
-    if (!file) throw GameException("Nu s-a gasit fisierul de salvari. Se va crea unul nou.");
+    if (!file) {
+        std::cout << "[INFO] Nu s-a gasit fisierul de salvari. Se va crea unul nou.\n";
+        return;
+    }
 
     std::string token;
     while (file >> token) {
@@ -65,22 +68,23 @@ void GameEngine::loadData() {
             file >> name;
             PlayerData pd;
             file >> pd.level >> pd.hp >> pd.gold;
-            int wCount;
+
+            int wCount = 0;
             file >> wCount;
             for(int i = 0; i < wCount; ++i) {
                 std::string wName;
                 std::getline(file >> std::ws, wName);
-                int wPrice, wDmg;
+                int wPrice = 0, wDmg = 0;
                 file >> wPrice >> wDmg;
                 pd.weapons.push_back(Weapon(wName, wPrice, wDmg));
             }
 
-            int pCount;
+            int pCount = 0;
             file >> pCount;
             for(int i = 0; i < pCount; ++i) {
                 std::string pName;
                 std::getline(file >> std::ws, pName);
-                int pPrice, pHeal;
+                int pPrice = 0, pHeal = 0;
                 file >> pPrice >> pHeal;
                 pd.potions.push_back(Potion(pName, pPrice, pHeal));
             }
@@ -125,15 +129,14 @@ void GameEngine::saveData() {
 }
 
 void GameEngine::start() {
-    try {
-        loadData();
-    } catch (const GameException& e) {
-        std::cout << "[INFO] " << e.what() << "\n";
-    }
+    loadData();
 
     std::string name;
     std::cout << "Introdu numele eroului tau : ";
-    std::cin >> name;
+
+    if (!(std::cin >> name)) {
+        name = "ErouDeTest";
+    }
 
     if (saveFiles.find(name) != saveFiles.end()) {
         PlayerData pd = saveFiles[name];
@@ -146,7 +149,6 @@ void GameEngine::start() {
 
     } else {
         std::cout << "\nUn nou erou se naste in acest taram!\n";
-        // Erou nou: Nivel 1, 100 HP, 50 Aur
         currentPlayer = new Player(name, 100, 50, 1);
         currentPlayer->getWeapons().addItem(Weapon("Pumnal de noob", 0, 10));
     }
@@ -166,14 +168,12 @@ void GameEngine::showMenu() {
         std::cout << "D. Salveaza progresul si iesi\n";
         std::cout << "E. Afiseaza inventarul\n";
         std::cout << "Alegerea ta: ";
-        std::cin >> choice;
 
         if (!(std::cin >> choice)) {
             std::cout << "\n[Sistem] Jocul s-a oprit deoarece nu mai exista input.\n";
             break;
         }
 
-        // Sa accepte si caractere mici
         switch (toupper(choice))
         {
             case 'A': travel(); break;
@@ -384,16 +384,18 @@ void GameEngine::combat() {
             }
         }
 
-        if (enemy->isAlive()) {
-            std::cout << "\n--- RANDUL INAMICULUI ---\n";
-            int roll = rollDice();
-            if (roll >= 12) {
-                int dmgTaken = enemy->attack();
-                std::cout << "Monstrul " << enemy->getName() << " te-a lovit puternic! Pierzi " << dmgTaken << " HP.\n";
-                currentPlayer->takeDamage(dmgTaken);
-            } else {
-                std::cout << "Atacul monstrului a trecut pe langa tine!\n";
-            }
+        if (!enemy->isAlive()) {
+            break;
+        }
+
+        std::cout << "\n--- RANDUL INAMICULUI ---\n";
+        int roll = rollDice();
+        if (roll >= 12) {
+            int dmgTaken = enemy->attack();
+            std::cout << "Monstrul " << enemy->getName() << " te-a lovit puternic! Pierzi " << dmgTaken << " HP.\n";
+            currentPlayer->takeDamage(dmgTaken);
+        } else {
+            std::cout << "Atacul monstrului a trecut pe langa tine!\n";
         }
     }
 
