@@ -8,7 +8,7 @@ private:
     int healAmount;
 public:
     Potion();
-    Potion(std::string n, int prc, int heal);
+    Potion(const std::string& n, int prc, int heal);
     int getHealAmount() const;
     void displayInfo() const override;
 };

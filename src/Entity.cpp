@@ -22,7 +22,7 @@ Entity& Entity::operator+=(int goldAmount) {
 
 Entity::~Entity() {}
 
-std::string Entity::getName() const {
+const std::string& Entity::getName() const {
     return name;
 }
 

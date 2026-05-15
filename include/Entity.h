@@ -18,7 +18,7 @@ public:
     virtual ~Entity();
 
     virtual void takeDamage(int amount) = 0;
-    std::string getName() const;
+    const std::string& getName() const;
     int getHp() const;
     int getGold() const;
     bool isAlive() const;

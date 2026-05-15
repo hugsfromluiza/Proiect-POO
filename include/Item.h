@@ -12,7 +12,7 @@ public:
     Item(std::string n, int prc);
     virtual ~Item();
 
-    std::string getName() const;
+    const std::string& getName() const;
     int getPrice() const;
 
     virtual void displayInfo() const = 0; // Clasa abstracta

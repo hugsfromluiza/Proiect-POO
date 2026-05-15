@@ -14,7 +14,7 @@ private:
 
 public:
     Player();
-    Player(std::string n, int hp, int g, int lvl);
+    Player(const std::string& n, int hp, int g, int lvl);
     Player(const Player& other);
     Player& operator=(const Player& other);
     ~Player() override;

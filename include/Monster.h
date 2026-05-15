@@ -7,7 +7,7 @@ class Monster : public Entity {
 protected:
     int damageOutput;
 public:
-    Monster(std::string n, int hp, int g, int dmg);
+    Monster(const std::string& n, int hp, int g, int dmg);
     void takeDamage(int amount) override;
     virtual int attack() const;
     virtual void battleCry() const = 0;

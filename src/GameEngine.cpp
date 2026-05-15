@@ -155,7 +155,7 @@ void GameEngine::start() {
 }
 
 void GameEngine::showMenu() {
-    char choice;
+    char choice='Z';
     do {
         std::cout << "\n=== MENIUL PRINCIPAL ===\n";
         std::cout << "Locatie: " << currentLocation << "\n";
@@ -167,6 +167,11 @@ void GameEngine::showMenu() {
         std::cout << "E. Afiseaza inventarul\n";
         std::cout << "Alegerea ta: ";
         std::cin >> choice;
+
+        if (!(std::cin >> choice)) {
+            std::cout << "\n[Sistem] Jocul s-a oprit deoarece nu mai exista input.\n";
+            break;
+        }
 
         // Sa accepte si caractere mici
         switch (toupper(choice))
@@ -224,7 +229,7 @@ void GameEngine::travel() {
     std::cout << "Alegere: ";
 
     int c;
-    std::cin >> c;
+    if (!(std::cin >> c)) return;
 
     if (c == 1)
         currentLocation = "Padurea Blestemata";
@@ -239,7 +244,7 @@ void GameEngine::shop() {
     std::cout << "\n=== NEGUSTORUL AMBULANT === (Aurul tau: " << currentPlayer->getGold() << ")\n";
     std::cout << "Ce doresti sa examinezi?\n1. Arme\n2. Potiuni\n3. Inapoi\nAlegere: ";
     int cat;
-    std::cin >> cat;
+    if (!(std::cin >> cat)) return;
 
     if (cat == 1) {
         std::cout << "\n--- ARME DISPONIBILE ---\n";
@@ -249,7 +254,7 @@ void GameEngine::shop() {
         }
         std::cout << "Introdu numarul armei (0 pt a renunta): ";
         int choice;
-        std::cin >> choice;
+        if (!(std::cin >> choice)) return;
 
         if (choice > 0 && choice <= (int)shopWeapons.size()) {
             try {
@@ -270,7 +275,7 @@ void GameEngine::shop() {
         }
         std::cout << "Introdu numarul potiunii (0 pt a renunta): ";
         int choice;
-        std::cin >> choice;
+        if (!(std::cin >> choice)) return;
 
         if (choice > 0 && choice <= (int)shopPotions.size()) {
             try {
@@ -290,7 +295,7 @@ void GameEngine::handleSpecialMonster(Monster* m) {
     m->battleCry();
 
     // Downcast
-    Dragon* dragon = dynamic_cast<Dragon*>(m);
+    const Dragon* dragon = dynamic_cast<Dragon*>(m);
     if (dragon != nullptr) {
         std::cout << "O creatura legendara se afla in fata ta!\n";
         dragon->fireBreath();
@@ -313,8 +318,8 @@ void GameEngine::combat() {
         std::cout << "\n--- RANDUL TAU ---\nHP Jucator: " << currentPlayer->getHp() << " | HP Monstru: " << enemy->getHp() << "\n";
         std::cout << "1. Ataca cu o arma\n2. Foloseste o potiune\nAlege o actiune: ";
 
-        int actiune;
-        std::cin >> actiune;
+        int actiune=0;
+        if (!(std::cin >> actiune)) break;
 
         if (actiune == 1) {
             if (!currentPlayer->getWeapons().hasItems()) {
@@ -323,7 +328,9 @@ void GameEngine::combat() {
             } else {
                 std::cout << "Alege arma cu care vrei sa lovesti:\n";
                 currentPlayer->getWeapons().display();
-                int wChoice; std::cin >> wChoice;
+
+                int wChoice=0;
+                if (!(std::cin >> wChoice)) break;
 
                 if (wChoice > 0 && wChoice <= currentPlayer->getWeapons().getSize()) {
                     Weapon w = currentPlayer->getWeapons().getItem(wChoice - 1);
@@ -356,7 +363,8 @@ void GameEngine::combat() {
             } else {
                 std::cout << "Alege potiunea pe care vrei sa o consumi:\n";
                 currentPlayer->getPotions().display();
-                int pChoice; std::cin >> pChoice;
+                int pChoice=0;
+                if (!(std::cin >> pChoice)) break;
 
                 if (pChoice > 0 && pChoice <= currentPlayer->getPotions().getSize()) {
                     Potion p = currentPlayer->getPotions().getItem(pChoice - 1);

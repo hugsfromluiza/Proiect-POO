@@ -5,7 +5,7 @@
 
 class Goblin : public Monster {
 public:
-    Goblin(std::string n, int hp, int g, int dmg);
+    Goblin(const std::string& n, int hp, int g, int dmg);
     void battleCry() const override;
 };
 

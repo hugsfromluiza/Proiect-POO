@@ -5,7 +5,7 @@
 
 class Dragon : public Monster {
 public:
-    Dragon(std::string n, int hp, int g, int dmg);
+    Dragon(const std::string& n, int hp, int g, int dmg);
     void battleCry() const override;
     void fireBreath() const;
 };

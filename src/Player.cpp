@@ -5,7 +5,7 @@
 
 Player::Player() : Entity(), level(1) {}
 
-Player::Player(std::string n, int hp, int g, int lvl) : Entity(n, hp, g), level(lvl) {}
+Player::Player(const std::string& n, int hp, int g, int lvl) : Entity(n, hp, g), level(lvl) {}
 
 Player::Player(const Player& other)
     : Entity(other), level(other.level), weapons(other.weapons), potions(other.potions) {}

@@ -8,7 +8,7 @@ private:
     int damage;
 public:
     Weapon();
-    Weapon(std::string n, int prc, int dmg);
+    Weapon(const std::string& n, int prc, int dmg);
     int getDamage() const;
     void displayInfo() const override;
 };
