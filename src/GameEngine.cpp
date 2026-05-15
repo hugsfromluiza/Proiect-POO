@@ -314,7 +314,7 @@ void GameEngine::combat() {
     std::cout << "\nUn " << enemy->getName() << " iti blocheaza calea!\n";
     handleSpecialMonster(enemy);
 
-    while (enemy->isAlive() && currentPlayer->isAlive()) {
+    while (currentPlayer->isAlive()) {
         std::cout << "\n--- RANDUL TAU ---\nHP Jucator: " << currentPlayer->getHp() << " | HP Monstru: " << enemy->getHp() << "\n";
         std::cout << "1. Ataca cu o arma\n2. Foloseste o potiune\nAlege o actiune: ";
 
