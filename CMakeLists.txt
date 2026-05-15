@@ -154,6 +154,8 @@ add_executable(${MAIN_EXECUTABLE_NAME} main.cpp ${SOURCES}
         include/Dragon.h
         src/Player.cpp
         include/Player.h
+        src/GameEngine.cpp
+        include/GameEngine.h
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )

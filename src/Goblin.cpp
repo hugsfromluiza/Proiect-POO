@@ -1,4 +1,4 @@
-#include "../include/Goblin.h"
+#include "Goblin.h"
 
 Goblin::Goblin(std::string n, int hp, int g, int dmg) : Monster(n, hp, g, dmg) {}
 

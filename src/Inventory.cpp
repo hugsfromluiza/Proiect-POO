@@ -16,7 +16,7 @@ template <typename T>
 void Inventory<T>::display() const {
     for (size_t i = 0; i < items.size(); ++i) {
         std::cout << i + 1 << ". ";
-        items[i].displayInfo(); // Polimorfism
+        items[i].displayInfo();
     }
 }
 

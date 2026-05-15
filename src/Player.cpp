@@ -1,5 +1,6 @@
-#include "../include/Player.h"
-#include "../include/GameException.h"
+#include "Player.h"
+#include "GameException.h"
+#include "Entity.h"
 #include <iostream>
 
 Player::Player() : Entity(), level(1) {}
