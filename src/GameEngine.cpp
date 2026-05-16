@@ -230,14 +230,16 @@ void GameEngine::travel() {
 
     int c;
     if (!(std::cin >> c)) return;
+    try {
+        if (c < 1 || c > 3)
+            throw LogicException("Destinatie inexistenta pe harta!");
+        if (c == 1) currentLocation = "Padurea Blestemata";
+        else if (c == 2) currentLocation = "Temnita Abandonata";
+        else if (c == 3) currentLocation = "Varful Dragonului";
 
-    if (c == 1)
-        currentLocation = "Padurea Blestemata";
-    else if (c == 2)
-        currentLocation = "Temnita Abandonata";
-    else if (c == 3)
-        currentLocation = "Varful Dragonului";
-    else std::cout << "Te-ai razgandit si ai ramas pe loc.\n";
+    } catch (const GameException& e) {
+        std::cout << "\n[Eroare Calatorie] " << e.what() << " Ai ramas pe loc.\n";
+    }
 }
 
 void GameEngine::shop() {
@@ -308,67 +310,61 @@ void GameEngine::combat() {
         difficultyModifier += 5;
     else if (currentLocation == "Temnita Abandonata")
         difficultyModifier += 2;
-
     Monster* enemy = MonsterFactory::spawnMonster(difficultyModifier);
-
     std::cout << "\nUn " << enemy->getName() << " iti blocheaza calea!\n";
     handleSpecialMonster(enemy);
-
     while (currentPlayer->isAlive()) {
         std::cout << "\n--- RANDUL TAU ---\nHP Jucator: " << currentPlayer->getHp() << " | HP Monstru: " << enemy->getHp() << "\n";
         std::cout << "1. Ataca cu o arma\n2. Foloseste o potiune\nAlege o actiune: ";
-
         int actiune=0;
         if (!(std::cin >> actiune)) break;
-
-        if (actiune == 1) {
-            if (!currentPlayer->getWeapons().hasItems()) {
-                std::cout << "Nu ai nicio arma! Lovesti cu pumnii (1 damage).\n";
-                enemy->takeDamage(1);
-            } else {
-                std::cout << "Alege arma cu care vrei sa lovesti:\n";
-                currentPlayer->getWeapons().display();
-
-                int wChoice=0;
-                if (!(std::cin >> wChoice)) break;
-
-                if (wChoice > 0 && wChoice <= currentPlayer->getWeapons().getSize()) {
+        try {
+            if (actiune != 1 && actiune != 2) {
+                throw LogicException("Actiune de lupta necunoscuta! Te-ai blocat de frica.");
+            }
+            if (actiune == 1) {
+                if (!currentPlayer->getWeapons().hasItems()) {
+                    std::cout << "Nu ai nicio arma! Lovesti cu pumnii (1 damage).\n";
+                    enemy->takeDamage(1);
+                } else {
+                    std::cout << "Alege arma cu care vrei sa lovesti:\n";
+                    currentPlayer->getWeapons().display();
+                    int wChoice=0;
+                    if (!(std::cin >> wChoice)) break;
+                    if (wChoice <= 0 || wChoice > currentPlayer->getWeapons().getSize()) {
+                        throw LogicException("Ai bajbait prin inventar si nu ai gasit arma dorita!");
+                    }
                     Weapon w = currentPlayer->getWeapons().getItem(wChoice - 1);
-
                     int roll = rollDice();
                     std::cout << "\nAi dat un " << roll << " la zar! ";
-
-                    if (roll >= 10 && roll <13) { // Success
+                    if (roll >= 10 && roll < 13) {
                         std::cout << "Lovitura a prins in plin! Dai " << w.getDamage()/2 << " damage.\n";
                         enemy->takeDamage(w.getDamage()/2);
                     } else if (roll >= 13 && roll < 18) {
                         std::cout << "Lovitura a prins in plin! Dai " << 3*w.getDamage()/4 << " damage.\n";
                         enemy->takeDamage(3*w.getDamage()/4);
-                    } else if (roll > 18) {
+                    } else if (roll >= 18) {
                         std::cout << "Lovitura a prins in plin! Dai " << w.getDamage() << " damage.\n";
                         enemy->takeDamage(w.getDamage());
-                    } else if (roll == 1) { // Critical Fail
+                    } else if (roll == 1) {
                         std::cout << "Esec critic! Te-ai impiedicat si arma ti-a alunecat din mana.\n";
-                    } else { // Normal Fail
+                    } else {
                         std::cout << "Monstrul a fentat atacul tau!\n";
                     }
-                } else {
-                    std::cout << "Ai bajbait prea mult cautand arma in inventar si ti-ai pierdut randul!\n";
                 }
             }
-        }
-        else if (actiune == 2) {
-            if (!currentPlayer->getPotions().hasItems()) {
-                std::cout << "Nu ai nicio potiune! Iti pierzi randul cautand in gol prin buzunare.\n";
-            } else {
-                std::cout << "Alege potiunea pe care vrei sa o consumi:\n";
-                currentPlayer->getPotions().display();
-                int pChoice=0;
-                if (!(std::cin >> pChoice)) break;
-
-                if (pChoice > 0 && pChoice <= currentPlayer->getPotions().getSize()) {
+            else if (actiune == 2) {
+                if (!currentPlayer->getPotions().hasItems()) {
+                    std::cout << "Nu ai nicio potiune! Iti pierzi randul cautand in gol prin buzunare.\n";
+                } else {
+                    std::cout << "Alege potiunea pe care vrei sa o consumi:\n";
+                    currentPlayer->getPotions().display();
+                    int pChoice=0;
+                    if (!(std::cin >> pChoice)) break;
+                    if (pChoice <= 0 || pChoice > currentPlayer->getPotions().getSize()) {
+                        throw LogicException("Ai intins mana dupa o sticluta care nu exista!");
+                    }
                     Potion p = currentPlayer->getPotions().getItem(pChoice - 1);
-
                     int roll = rollDice();
                     if (roll >= 5) {
                         currentPlayer->heal(p.getHealAmount());
@@ -378,16 +374,15 @@ void GameEngine::combat() {
                         std::cout << "\nZar mic (" << roll << ")! Fiind grabit in mijlocul luptei, ai scapat sticluta din mana. Potiunea s-a irosit!\n";
                         currentPlayer->getPotions().removeItem(pChoice - 1);
                     }
-                } else {
-                    std::cout << "Alegere invalida. Ti-ai pierdut randul!\n";
                 }
             }
         }
-
+        catch (const GameException& e) {
+            std::cout << "\n[Actiune Esuata] " << e.what() << " Ti-ai pierdut randul!\n";
+        }
         if (!enemy->isAlive()) {
             break;
         }
-
         std::cout << "\n--- RANDUL INAMICULUI ---\n";
         int roll = rollDice();
         if (roll >= 12) {
