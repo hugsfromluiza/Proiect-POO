@@ -235,7 +235,7 @@ void GameEngine::travel() {
             throw LogicException("Destinatie inexistenta pe harta!");
         if (c == 1) currentLocation = "Padurea Blestemata";
         else if (c == 2) currentLocation = "Temnita Abandonata";
-        else if (c == 3) currentLocation = "Varful Dragonului";
+        else currentLocation = "Varful Dragonului";
 
     } catch (const GameException& e) {
         std::cout << "\n[Eroare Calatorie] " << e.what() << " Ai ramas pe loc.\n";
