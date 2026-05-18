@@ -260,7 +260,6 @@ void GameEngine::shop() {
 
         if (choice > 0 && choice <= (int)shopWeapons.size()) {
             try {
-                // LogicException daca nu are bani
                 currentPlayer->spendGold(shopWeapons[choice-1].getPrice());
                 currentPlayer->getWeapons().addItem(shopWeapons[choice-1]);
                 currentPlayer->getWeapons().sortInventory(); // Sortare cu functie lambda
